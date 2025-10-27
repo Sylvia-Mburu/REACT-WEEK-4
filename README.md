@@ -1,4 +1,4 @@
-<<<<<<< HEAD
+
 DAILY TASKS
 A modern, responsive Student Management System built with React, Vite, and Tailwind CSS. This application allows you to create, read, update, and delete student records with a clean and intuitive interface.
 
@@ -187,4 +187,3 @@ Your work will be automatically submitted when you push to your GitHub Classroom
 - [Tailwind CSS Documentation](https://tailwindcss.com/docs)
 - [Vite Documentation](https://vitejs.dev/guide/)
 - [React Router Documentation](https://reactrouter.com/) 
->>>>>>> 4ed5bfc937dae33fbf84288ba83a41373961b9e4

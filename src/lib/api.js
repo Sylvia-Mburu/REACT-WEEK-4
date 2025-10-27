@@ -1,28 +1,35 @@
-const STORAGE_KEY = "tasks";
+const API_URL = "https://jsonplaceholder.typicode.com/todos";
 
 export async function fetchTasks() {
-  const saved = localStorage.getItem(STORAGE_KEY);
-  return saved ? JSON.parse(saved) : [];
+  const res = await fetch(API_URL);
+  if (!res.ok) throw new Error("Failed to fetch tasks");
+  return res.json();
 }
 
 export async function createTask(task) {
-  const tasks = await fetchTasks();
-  const newTask = { ...task, _id: Date.now().toString() };
-  const updated = [newTask, ...tasks];
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(updated));
-  return newTask;
+  const res = await fetch(API_URL, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(task),
+  });
+  if (!res.ok) throw new Error("Failed to create task");
+  return res.json();
 }
 
-export async function updateTask(id, updatedTask) {
-  const tasks = await fetchTasks();
-  const updated = tasks.map(t => (t._id === id ? updatedTask : t));
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(updated));
-  return updatedTask;
+export async function updateTask(id, task) {
+  const res = await fetch(`${API_URL}/${id}`, {
+    method: "PUT",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(task),
+  });
+  if (!res.ok) throw new Error("Failed to update task");
+  return res.json();
 }
 
 export async function deleteTask(id) {
-  const tasks = await fetchTasks();
-  const updated = tasks.filter(t => t._id !== id);
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(updated));
-  return { success: true };
+  const res = await fetch(`${API_URL}/${id}`, {
+    method: "DELETE",
+  });
+  if (!res.ok) throw new Error("Failed to delete task");
+  return true;
 }

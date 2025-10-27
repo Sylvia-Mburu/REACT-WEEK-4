@@ -1,51 +1,34 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import TaskCard from "../components/TaskCard";
 import TaskForm from "../components/TaskForm";
-import { fetchTasks, createTask, updateTask, deleteTask } from "../lib/api";
 
 export default function Home() {
-  const [tasks, setTasks] = useState([]);
-  const [loading, setLoading] = useState(false);
+  const [tasks, setTasks] = useState([]); // start empty
   const [error, setError] = useState("");
 
-  useEffect(() => {
-    (async () => {
-      try {
-        setLoading(true);
-        const data = await fetchTasks();
-        setTasks(data);
-      } catch (e) {
-        setError(e.message);
-      } finally {
-        setLoading(false);
-      }
-    })();
-  }, []);
-
-  async function handleAdd(task) {
-    const created = await createTask(task);
-    setTasks(prev => [created, ...prev]);
+  function handleAdd(task) {
+    const newTask = { id: Date.now(), title: task.title, done: false };
+    setTasks(prev => [newTask, ...prev]);
   }
 
-  async function handleEdit(st) {
-    const updated = await updateTask(st._id, st);
-    setTasks(prev => prev.map(x => (x._id === st._id ? updated : x)));
+  function handleEdit(updatedTask) {
+    setTasks(prev =>
+      prev.map(t => (t.id === updatedTask.id ? updatedTask : t))
+    );
   }
 
-  async function handleDelete(id) {
-    await deleteTask(id);
-    setTasks(prev => prev.filter(x => x._id !== id));
+  function handleDelete(id) {
+    setTasks(prev => prev.filter(t => t.id !== id));
   }
 
   return (
     <main>
       <TaskForm onSubmit={handleAdd} />
-      {loading && <p>Loading...</p>}
       {error && <p className="text-red-600">{error}</p>}
-      {tasks.map(s => (
+      {tasks.map(t => (
         <TaskCard
-          key={s._id}
-          task={s}
+          key={t.id}
+          task={t}
           onEdit={handleEdit}
           onDelete={handleDelete}
         />

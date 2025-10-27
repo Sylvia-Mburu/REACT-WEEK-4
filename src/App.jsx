@@ -5,7 +5,11 @@ import Home from "./components/Home";
 import { TaskProvider } from "./context/TaskContext";
 
 function About() {
-  return <div className="p-4">This is the About page.this app gives you the freedom and pleasure to keep your life free from being disorganized.</div>;
+  return (
+    <div className="p-4">
+      This app gives you the freedom and pleasure to keep your life organized.
+    </div>
+  );
 }
 
 export default function App() {
